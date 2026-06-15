@@ -1,2 +1,1 @@
-# eDock-Apps
-Official application registry for eDock.
+eDock-Apps is the central index and distribution repository for installable eDock applications. It provides metadata, versioning, and download sources for independently developed apps that integrate seamlessly with the eDock runtime.

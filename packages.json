@@ -4,18 +4,14 @@
     {
       "id": "emanf.spotlight",
       "name": "spotlight",
-      "version": "1.0.0",
-	  "updated": "2026-06-10",
       "author": "emanF",
       "description": "Search apps and files",
       "icon": "https://raw.githubusercontent.com/emanF/eDock-Spotlight/main/icon.png",
-	  "homepage": "https://github.com/emanF/eDock-Spotlight",
+      "homepage": "https://github.com/emanF/eDock-Spotlight",
       "download": "https://github.com/emanF/eDock-Spotlight/releases/latest/download/app.zip",
-	  "size": 24500,
-	  "minDockVersion": "0.3.0",
+      "manifest": "https://raw.githubusercontent.com/emanF/eDock-Spotlight/main/app.json",
       "category": "utility",
-	  "keywords": ["search", "launcher", "spotlight"],
-	  "sha256": ""
+      "keywords": ["search", "launcher", "spotlight"]
     }
   ]
 }

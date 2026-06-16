@@ -24,7 +24,7 @@
       "manifest": "https://raw.githubusercontent.com/emanF/eDock-ThemeManager/main/app.json",
       "category": "utility",
       "keywords": ["theme", "manager"]
-    }.
+    },
     {
       "id": "emanf.test",
       "name": "test app",

@@ -1,41 +1,36 @@
 {
   "schema": 1,
+  "generated_at": "2026-06-17T15:17:52.862Z",
   "packages": [
     {
       "id": "emanf.spotlight",
-      "name": "spotlight",
-      "author": "emanF",
-      "description": "Search apps and files",
-      "icon": "https://raw.githubusercontent.com/emanF/eDock-Spotlight/main/icon.png",
-      "homepage": "https://github.com/emanF/eDock-Spotlight",
-      "download": "https://github.com/emanF/eDock-Spotlight/releases/latest/download/app.zip",
+      "title": "Spotlight",
+      "description": "A fast desktop search popup inspired by macOS Spotlight.",
+      "version": "0.2.0",
+      "author": "eManF",
+      "homepage": null,
+      "icon": "m:search",
+      "download": null,
       "manifest": "https://raw.githubusercontent.com/emanF/eDock-Spotlight/main/app.json",
-      "category": "utility",
-      "keywords": ["search", "launcher", "spotlight"]
+      "category": null,
+      "keywords": [],
+      "min_edock_version": null,
+      "license": null
     },
     {
       "id": "emanf.theme_manager",
-      "name": "Theme Manager",
-      "author": "emanF",
-      "description": "Live theme switching, premade themes, cloning, and JSON editing for eDock.",
-      "icon": "https://raw.githubusercontent.com/emanF/eDock-ThemeManager/main/icon.png",
-      "homepage": "https://github.com/emanF/eDock-ThemeManager",
-      "download": "https://github.com/emanF/eDock-ThemeManager/releases/latest/download/app.zip",
+      "title": "Theme Manager",
+      "description": "Manage, preview, customize, and apply dock themes.",
+      "version": "0.1.12",
+      "author": "eManF",
+      "homepage": null,
+      "icon": "m:palette",
+      "download": null,
       "manifest": "https://raw.githubusercontent.com/emanF/eDock-ThemeManager/main/app.json",
-      "category": "utility",
-      "keywords": ["theme", "manager"]
-    },
-    {
-      "id": "emanf.test",
-      "name": "test app",
-      "author": "emanF",
-      "description": "...",
-      "icon": "https://raw.githubusercontent.com/emanF/eDock-test/main/icon.png",
-      "homepage": "https://github.com/emanF/eDock-test",
-      "download": "https://github.com/emanF/eDock-test/releases/latest/download/app.zip",
-      "manifest": "https://raw.githubusercontent.com/emanF/eDock-test/main/app.json",
-      "category": "utility",
-      "keywords": ["test"]
+      "category": null,
+      "keywords": [],
+      "min_edock_version": null,
+      "license": null
     }
   ]
 }

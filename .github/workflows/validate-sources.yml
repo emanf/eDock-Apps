@@ -6,12 +6,14 @@ on:
       - "sources.json"
       - "scripts/validate-sources.mjs"
       - ".github/workflows/validate-sources.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   validate:
+    name: Validate app sources
     runs-on: ubuntu-latest
 
     steps:

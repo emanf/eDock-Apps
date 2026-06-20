@@ -1,35 +1,81 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-const SOURCES_FILE = "sources.json";
-const OUTPUT_FILE = "packages.json";
+const REGISTRIES = [
+  {
+    sourcesFile: "sources.json",
+    outputFile: "packages.json"
+  },
+  {
+    sourcesFile: "pending_sources.json",
+    outputFile: "pending_packages.json"
+  }
+];
 
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+function normalizeStringOrNull(value) {
+  return isNonEmptyString(value) ? value : null;
+}
+
+function normalizeString(value, field) {
+  if (!isNonEmptyString(value)) {
+    throw new Error(`Missing required field "${field}"`);
+  }
+
+  return value;
+}
+
+function normalizeKeywords(value) {
+  return Array.isArray(value) ? value.filter(isNonEmptyString) : [];
+}
+
 function normalizeManifest(manifest, manifestUrl) {
-  const requiredFields = ["id", "title", "description", "version", "author"];
+  const requiredFields = [
+    "schema",
+    "id",
+    "title",
+    "description",
+    "version",
+    "last_modified",
+    "author",
+    "icon",
+    "homepage",
+    "repository",
+    "download",
+    "manifest",
+    "min_edock_version"
+  ];
 
   for (const field of requiredFields) {
-    if (!isNonEmptyString(manifest[field])) {
-      throw new Error(`Missing required field "${field}"`);
-    }
+    normalizeString(manifest[field], field);
+  }
+
+  if (manifest.schema !== 1) {
+    throw new Error('Field "schema" must be 1');
   }
 
   return {
+    schema: manifest.schema,
     id: manifest.id,
     title: manifest.title,
     description: manifest.description,
     version: manifest.version,
+    last_modified: manifest.last_modified,
     author: manifest.author,
-    homepage: manifest.homepage ?? null,
-    icon: manifest.icon ?? null,
-    download: manifest.download ?? null,
+    author_email: normalizeStringOrNull(manifest.author_email),
+    author_website: normalizeStringOrNull(manifest.author_website),
+    icon: manifest.icon,
+    homepage: manifest.homepage,
+    repository: manifest.repository,
+    category: normalizeStringOrNull(manifest.category),
+    keywords: normalizeKeywords(manifest.keywords),
+    download: manifest.download,
     manifest: manifestUrl,
-    category: manifest.category ?? null,
-    keywords: Array.isArray(manifest.keywords) ? manifest.keywords : [],
-    min_edock_version: manifest.min_edock_version ?? null,
-    license: manifest.license ?? null
+    changelog: normalizeStringOrNull(manifest.changelog),
+    min_edock_version: manifest.min_edock_version,
+    license: typeof manifest.license === "string" ? manifest.license : null
   };
 }
 
@@ -47,12 +93,12 @@ async function fetchJson(url) {
   return response.json();
 }
 
-async function main() {
-  const sourcesRaw = await readFile(SOURCES_FILE, "utf8");
+async function generateRegistry(sourcesFile, outputFile) {
+  const sourcesRaw = await readFile(sourcesFile, "utf8");
   const sources = JSON.parse(sourcesRaw);
 
   if (!Array.isArray(sources.manifests)) {
-    throw new Error(`"${SOURCES_FILE}" must contain a manifests array`);
+    throw new Error(`"${sourcesFile}" must contain a manifests array`);
   }
 
   const packages = [];
@@ -60,7 +106,7 @@ async function main() {
 
   for (const manifestUrl of sources.manifests) {
     if (!isNonEmptyString(manifestUrl)) {
-      console.warn(`Skipping invalid manifest URL: ${manifestUrl}`);
+      console.warn(`Skipping invalid manifest URL in ${sourcesFile}: ${manifestUrl}`);
       continue;
     }
 
@@ -88,9 +134,15 @@ async function main() {
     packages
   };
 
-  await writeFile(OUTPUT_FILE, `${JSON.stringify(output, null, 2)}\n`, "utf8");
+  await writeFile(outputFile, `${JSON.stringify(output, null, 2)}\n`, "utf8");
 
-  console.log(`Wrote ${packages.length} packages to ${OUTPUT_FILE}`);
+  console.log(`Wrote ${packages.length} packages to ${outputFile}`);
+}
+
+async function main() {
+  for (const registry of REGISTRIES) {
+    await generateRegistry(registry.sourcesFile, registry.outputFile);
+  }
 }
 
 main().catch((error) => {

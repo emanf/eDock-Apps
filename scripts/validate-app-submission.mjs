@@ -17,6 +17,11 @@ const SOURCE_FILES = [
   'pending_sources.json'
 ];
 
+const PACKAGE_FILES = [
+  'packages.json',
+  'pending_packages.json'
+];
+
 const VALIDATION_MARKER = '<!-- edock-app-submission-validation -->';
 
 function fail(message) {
@@ -159,6 +164,18 @@ function getManifestListFromSourceData(data, filePath) {
   return data.manifests.filter(isNonEmptyString).map(normalizeUrl);
 }
 
+function getPackageListFromPackageData(data, filePath) {
+  if (!data) {
+    return [];
+  }
+
+  if (!Array.isArray(data.packages)) {
+    fail(`Field "packages" in ${filePath} must be an array`);
+  }
+
+  return data.packages;
+}
+
 async function findExistingManifest(manifestUrl) {
   const submittedUrl = normalizeUrl(manifestUrl);
 
@@ -168,6 +185,24 @@ async function findExistingManifest(manifestUrl) {
 
     if (manifests.includes(submittedUrl)) {
       return filePath;
+    }
+  }
+
+  return null;
+}
+
+async function findExistingAppId(appId) {
+  for (const filePath of PACKAGE_FILES) {
+    const data = await readJsonFileIfExists(filePath);
+    const packages = getPackageListFromPackageData(data, filePath);
+
+    const existingPackage = packages.find(pkg => pkg && pkg.id === appId);
+
+    if (existingPackage) {
+      return {
+        filePath,
+        manifest: isNonEmptyString(existingPackage.manifest) ? existingPackage.manifest : null
+      };
     }
   }
 
@@ -335,6 +370,26 @@ async function markDuplicateAndClose(issue, manifestUrl, existingFile) {
   await closeIssue(issue.url);
 }
 
+async function markDuplicateIdAndClose(issue, manifest, existingAppId) {
+  await removeLabel(issue.url, 'submission-valid');
+  await removeLabel(issue.url, 'submission-invalid');
+  await addLabels(issue.url, ['submission-duplicate']);
+  await replaceBotComment(
+    issue.comments_url,
+    [
+      'Duplicate app id.',
+      '',
+      `App ID: \`${manifest.id}\``,
+      `Already found in: \`${existingAppId.filePath}\``,
+      existingAppId.manifest ? `Existing manifest: ${existingAppId.manifest}` : '',
+      '',
+      'Every app must have a unique id.',
+      'This issue will be closed automatically.'
+    ].filter(Boolean).join('\n')
+  );
+  await closeIssue(issue.url);
+}
+
 async function main() {
   const eventPath = process.env.GITHUB_EVENT_PATH;
 
@@ -386,6 +441,15 @@ async function main() {
   try {
     const manifest = await fetchJson(manifestUrl);
     validateManifest(manifest, manifestUrl);
+
+    const existingAppId = await findExistingAppId(manifest.id);
+
+    if (existingAppId) {
+      await markDuplicateIdAndClose(issue, manifest, existingAppId);
+      console.log(`Duplicate submission closed: app id ${manifest.id} already exists in ${existingAppId.filePath}`);
+      return;
+    }
+
     await markValid(issue, manifest, manifestUrl);
     console.log(`Validation passed for ${manifest.id}`);
   } catch (error) {

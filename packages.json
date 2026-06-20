@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-06-20T09:18:04.223Z",
+  "generated_at": "2026-06-20T12:21:39.998Z",
   "packages": [
     {
       "id": "emanf.spotlight",
@@ -8,14 +8,19 @@
       "description": "A fast desktop search popup inspired by macOS Spotlight.",
       "version": "0.2.0",
       "author": "eManF",
-      "homepage": null,
+      "homepage": "https://github.com/eManF/eDock-Spotlight",
       "icon": "m:search",
-      "download": null,
-      "manifest": "https://raw.githubusercontent.com/emanF/eDock-Spotlight/main/app.json",
-      "category": null,
-      "keywords": [],
-      "min_edock_version": null,
-      "license": null
+      "download": "https://github.com/eManF/eDock-Spotlight/releases/latest/download/app.zip",
+      "manifest": "https://raw.githubusercontent.com/eManF/eDock-Spotlight/main/app.json",
+      "category": "utility",
+      "keywords": [
+        "search",
+        "launcher",
+        "installer",
+        "spotlight"
+      ],
+      "min_edock_version": "0.1.0",
+      "license": ""
     },
     {
       "id": "emanf.theme_manager",
@@ -23,14 +28,21 @@
       "description": "Manage, preview, customize, and apply dock themes.",
       "version": "0.1.12",
       "author": "eManF",
-      "homepage": null,
+      "homepage": "https://github.com/eManF/eDock-ThemeManager",
       "icon": "m:palette",
-      "download": null,
-      "manifest": "https://raw.githubusercontent.com/emanF/eDock-ThemeManager/main/app.json",
-      "category": null,
-      "keywords": [],
-      "min_edock_version": null,
-      "license": null
+      "download": "https://github.com/eManF/eDock-ThemeManager/releases/latest/download/app.zip",
+      "manifest": "https://raw.githubusercontent.com/eManF/eDock-ThemeManager/main/app.json",
+      "category": "utility",
+      "keywords": [
+        "theme",
+        "themes",
+        "manager",
+        "style",
+        "customize",
+        "preview"
+      ],
+      "min_edock_version": "0.1.0",
+      "license": ""
     }
   ]
 }

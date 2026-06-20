@@ -6,7 +6,7 @@ eDock-Apps is the central index and distribution repository for installable eDoc
 
 The official eDock app index is:
 ```text
-https://raw.githubusercontent.com/emanF/eDock-Apps/main/packages.json
+https://raw.githubusercontent.com/eManF/eDock-Apps/main/packages.json
 ```
 
 For eDock Spotlight, this is used in:
@@ -20,7 +20,7 @@ Example:
 ```text
 {
   "app_indexes": [
-    "https://raw.githubusercontent.com/emanF/eDock-Apps/main/packages.json"
+    "https://raw.githubusercontent.com/eManF/eDock-Apps/main/packages.json"
   ]
 }
 ```
@@ -30,7 +30,7 @@ Example:
 There is also a pending app index:
 
 ```text
-https://raw.githubusercontent.com/emanF/eDock-Apps/main/pending_packages.json
+https://raw.githubusercontent.com/eManF/eDock-Apps/main/pending_packages.json
 ```
 
 This index contains apps that passed basic validation but may not be fully reviewed yet.
@@ -41,8 +41,8 @@ Example:
 ```text
 {
   "app_indexes": [
-    "https://raw.githubusercontent.com/emanF/eDock-Apps/main/packages.json",
-    "https://raw.githubusercontent.com/emanF/eDock-Apps/main/pending_packages.json"
+    "https://raw.githubusercontent.com/eManF/eDock-Apps/main/packages.json",
+    "https://raw.githubusercontent.com/eManF/eDock-Apps/main/pending_packages.json"
   ]
 }
 ```

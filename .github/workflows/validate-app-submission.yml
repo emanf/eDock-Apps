@@ -1,0 +1,31 @@
+name: Validate app submission
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  validate:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'app-submission')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Validate app submission
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: node scripts/validate-app-submission.mjs

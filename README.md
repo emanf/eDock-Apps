@@ -12,7 +12,7 @@ https://raw.githubusercontent.com/eManF/eDock-Apps/main/packages.json
 For eDock Spotlight, this is used in:
 
 ```text
-apps/user/data/emanf.spotlight/indexes.json
+/user/data/emanf.spotlight/indexes.json
 ```
 
 Example:

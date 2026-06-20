@@ -1,8 +1,7 @@
 {
   "schema": 1,
   "manifests": [
-    "https://raw.githubusercontent.com/emanF/eDock-Spotlight/main/app.json",
-    "https://raw.githubusercontent.com/emanF/eDock-ThemeManager/main/app.json",
-    "https://raw.githubusercontent.com/emanF/eDock-test/main/app.json"
+    "https://raw.githubusercontent.com/eManF/eDock-Spotlight/main/app.json",
+    "https://raw.githubusercontent.com/eManF/eDock-ThemeManager/main/app.json"
   ]
 }

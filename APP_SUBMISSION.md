@@ -1,6 +1,7 @@
 ## Manifest URL
 ```text
 PASTE_MANIFEST_URL_HERE
+```
 
 - My manifest URL is public
 - My app has a unique `id`

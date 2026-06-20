@@ -17,6 +17,8 @@ const SOURCE_FILES = [
   'pending_sources.json'
 ];
 
+const VALIDATION_MARKER = '<!-- edock-app-submission-validation -->';
+
 function fail(message) {
   throw new Error(message);
 }
@@ -202,17 +204,27 @@ async function githubRequest(url, method, body) {
   return response.json();
 }
 
-async function replaceBotComment(commentsUrl, body) {
+async function getBotValidationComments(commentsUrl) {
   const comments = await githubRequest(commentsUrl, 'GET');
-  const marker = '<!-- edock-app-submission-validation -->';
-  const existing = Array.isArray(comments)
-    ? comments.find(comment => typeof comment.body === 'string' && comment.body.includes(marker))
-    : null;
 
-  const finalBody = `${marker}\n${body}`;
+  if (!Array.isArray(comments)) {
+    return [];
+  }
 
-  if (existing) {
-    await githubRequest(existing.url, 'PATCH', { body: finalBody });
+  return comments.filter(comment => typeof comment.body === 'string' && comment.body.includes(VALIDATION_MARKER));
+}
+
+async function replaceBotComment(commentsUrl, body) {
+  const existingComments = await getBotValidationComments(commentsUrl);
+  const finalBody = `${VALIDATION_MARKER}\n${body}`;
+
+  if (existingComments.length > 0) {
+    await githubRequest(existingComments[0].url, 'PATCH', { body: finalBody });
+
+    for (let i = 1; i < existingComments.length; i += 1) {
+      await githubRequest(existingComments[i].url, 'DELETE');
+    }
+
     return;
   }
 
@@ -253,6 +265,20 @@ async function closeIssue(issueUrl) {
   await githubRequest(issueUrl, 'PATCH', {
     state: 'closed',
     state_reason: 'completed'
+  });
+}
+
+function issueHasLabel(issue, labelName) {
+  if (!Array.isArray(issue.labels)) {
+    return false;
+  }
+
+  return issue.labels.some(label => {
+    if (typeof label === 'string') {
+      return label === labelName;
+    }
+
+    return label && label.name === labelName;
   });
 }
 
@@ -322,6 +348,16 @@ async function main() {
 
   if (!issue) {
     console.log('No issue found in event payload');
+    return;
+  }
+
+  if (!issueHasLabel(issue, 'app-submission')) {
+    console.log('Issue does not have app-submission label');
+    return;
+  }
+
+  if (event.action === 'closed') {
+    console.log('Issue is closed');
     return;
   }
 

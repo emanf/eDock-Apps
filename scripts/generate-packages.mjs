@@ -32,8 +32,7 @@ function normalizeKeywords(value) {
 }
 
 function normalizeManifest(manifest, manifestUrl) {
-  const requiredFields = [
-    "schema",
+  const requiredStringFields = [
     "id",
     "title",
     "description",
@@ -48,12 +47,12 @@ function normalizeManifest(manifest, manifestUrl) {
     "min_edock_version"
   ];
 
-  for (const field of requiredFields) {
-    normalizeString(manifest[field], field);
-  }
-
   if (manifest.schema !== 1) {
     throw new Error('Field "schema" must be 1');
+  }
+
+  for (const field of requiredStringFields) {
+    normalizeString(manifest[field], field);
   }
 
   return {

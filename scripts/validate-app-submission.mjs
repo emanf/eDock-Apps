@@ -12,12 +12,21 @@ const REQUIRED_FIELDS = [
   'manifest'
 ];
 
+const SOURCE_FILES = [
+  'sources.json',
+  'pending_sources.json'
+];
+
 function fail(message) {
   throw new Error(message);
 }
 
 function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+function normalizeUrl(value) {
+  return isNonEmptyString(value) ? value.trim() : '';
 }
 
 function isValidHttpsUrl(value) {
@@ -110,7 +119,7 @@ function validateManifest(manifest, manifestUrl) {
     fail('Field "manifest" must be a valid HTTPS URL');
   }
 
-  if (manifest.manifest !== manifestUrl) {
+  if (normalizeUrl(manifest.manifest) !== normalizeUrl(manifestUrl)) {
     fail('Field "manifest" must exactly match the submitted manifest URL');
   }
 
@@ -121,6 +130,46 @@ function validateManifest(manifest, manifestUrl) {
   if (!isValidHttpsUrl(manifest.icon)) {
     fail('Field "icon" must be a valid HTTPS URL or a material icon like "m:palette"');
   }
+}
+
+async function readJsonFileIfExists(filePath) {
+  try {
+    const content = await fs.readFile(filePath, 'utf8');
+    return JSON.parse(content);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return null;
+    }
+
+    fail(`Could not read ${filePath}: ${error.message}`);
+  }
+}
+
+function getManifestListFromSourceData(data, filePath) {
+  if (!data) {
+    return [];
+  }
+
+  if (!Array.isArray(data.manifests)) {
+    fail(`Field "manifests" in ${filePath} must be an array`);
+  }
+
+  return data.manifests.filter(isNonEmptyString).map(normalizeUrl);
+}
+
+async function findExistingManifest(manifestUrl) {
+  const submittedUrl = normalizeUrl(manifestUrl);
+
+  for (const filePath of SOURCE_FILES) {
+    const data = await readJsonFileIfExists(filePath);
+    const manifests = getManifestListFromSourceData(data, filePath);
+
+    if (manifests.includes(submittedUrl)) {
+      return filePath;
+    }
+  }
+
+  return null;
 }
 
 async function githubRequest(url, method, body) {
@@ -153,11 +202,6 @@ async function githubRequest(url, method, body) {
   return response.json();
 }
 
-async function listLabels(commentsUrl) {
-  const response = await githubRequest(commentsUrl.replace('/comments', ''), 'GET');
-  return Array.isArray(response.labels) ? response.labels.map(label => label.name) : [];
-}
-
 async function replaceBotComment(commentsUrl, body) {
   const comments = await githubRequest(commentsUrl, 'GET');
   const marker = '<!-- edock-app-submission-validation -->';
@@ -182,6 +226,10 @@ async function addLabels(issueUrl, labels) {
 async function removeLabel(issueUrl, label) {
   const token = process.env.GITHUB_TOKEN;
 
+  if (!isNonEmptyString(token)) {
+    fail('Missing GITHUB_TOKEN');
+  }
+
   const response = await fetch(`${issueUrl}/labels/${encodeURIComponent(label)}`, {
     method: 'DELETE',
     headers: {
@@ -199,6 +247,66 @@ async function removeLabel(issueUrl, label) {
     const text = await response.text();
     fail(`Failed to remove label "${label}": ${response.status} ${response.statusText} - ${text}`);
   }
+}
+
+async function closeIssue(issueUrl) {
+  await githubRequest(issueUrl, 'PATCH', {
+    state: 'closed',
+    state_reason: 'completed'
+  });
+}
+
+async function markInvalid(issue, message) {
+  await removeLabel(issue.url, 'submission-valid');
+  await removeLabel(issue.url, 'submission-duplicate');
+  await addLabels(issue.url, ['submission-invalid']);
+  await replaceBotComment(
+    issue.comments_url,
+    [
+      'Validation failed.',
+      '',
+      message,
+      '',
+      'Please fix the manifest and edit the issue.'
+    ].join('\n')
+  );
+}
+
+async function markValid(issue, manifest, manifestUrl) {
+  await removeLabel(issue.url, 'submission-invalid');
+  await removeLabel(issue.url, 'submission-duplicate');
+  await addLabels(issue.url, ['submission-valid']);
+  await replaceBotComment(
+    issue.comments_url,
+    [
+      'Validation passed.',
+      '',
+      `App ID: \`${manifest.id}\``,
+      `Title: \`${manifest.title}\``,
+      `Version: \`${manifest.version}\``,
+      `Manifest: ${manifestUrl}`,
+      '',
+      'This submission is ready for human review before being added to the pre-reviewed source list.'
+    ].join('\n')
+  );
+}
+
+async function markDuplicateAndClose(issue, manifestUrl, existingFile) {
+  await removeLabel(issue.url, 'submission-valid');
+  await removeLabel(issue.url, 'submission-invalid');
+  await addLabels(issue.url, ['submission-duplicate']);
+  await replaceBotComment(
+    issue.comments_url,
+    [
+      'Submission already exists.',
+      '',
+      `Manifest: ${manifestUrl}`,
+      `Already found in: \`${existingFile}\``,
+      '',
+      'This issue will be closed automatically.'
+    ].join('\n')
+  );
+  await closeIssue(issue.url);
 }
 
 async function main() {
@@ -220,13 +328,9 @@ async function main() {
   const manifestUrl = extractManifestUrlFromIssueBody(issue.body || '');
 
   if (!manifestUrl) {
-    await removeLabel(issue.url, 'submission-valid');
-    await addLabels(issue.url, ['submission-invalid']);
-    await replaceBotComment(
-      issue.comments_url,
+    await markInvalid(
+      issue,
       [
-        'Validation failed.',
-        '',
         'Could not find a manifest URL in the issue body.',
         '',
         'Please include a direct `.json` manifest URL in the issue.'
@@ -235,40 +339,21 @@ async function main() {
     fail('No manifest URL found in issue body');
   }
 
+  const existingFile = await findExistingManifest(manifestUrl);
+
+  if (existingFile) {
+    await markDuplicateAndClose(issue, manifestUrl, existingFile);
+    console.log(`Duplicate submission closed: ${manifestUrl} already exists in ${existingFile}`);
+    return;
+  }
+
   try {
     const manifest = await fetchJson(manifestUrl);
     validateManifest(manifest, manifestUrl);
-
-    await removeLabel(issue.url, 'submission-invalid');
-    await addLabels(issue.url, ['submission-valid']);
-    await replaceBotComment(
-      issue.comments_url,
-      [
-        'Validation passed.',
-        '',
-        `App ID: \`${manifest.id}\``,
-        `Title: \`${manifest.title}\``,
-        `Version: \`${manifest.version}\``,
-        `Manifest: ${manifestUrl}`,
-        '',
-        'This submission is ready for human review before being added to the pre-reviewed source list.'
-      ].join('\n')
-    );
-
+    await markValid(issue, manifest, manifestUrl);
     console.log(`Validation passed for ${manifest.id}`);
   } catch (error) {
-    await removeLabel(issue.url, 'submission-valid');
-    await addLabels(issue.url, ['submission-invalid']);
-    await replaceBotComment(
-      issue.comments_url,
-      [
-        'Validation failed.',
-        '',
-        `${error.message}`,
-        '',
-        'Please fix the manifest and edit the issue.'
-      ].join('\n')
-    );
+    await markInvalid(issue, error.message);
     throw error;
   }
 }

@@ -1,7 +1,60 @@
 {
   "schema": 1,
-  "generated_at": "2026-06-29T00:55:51.505Z",
+  "generated_at": "2026-06-29T00:58:47.673Z",
   "packages": [
+    {
+      "schema": 1,
+      "id": "emanf.crypto_tool",
+      "title": "Crypto Tool",
+      "description": "A simple real-time crypto and text transform utility.",
+      "version": "0.1.0",
+      "last_modified": "2026-06-29",
+      "author": "eManF",
+      "author_email": "emanf.co@gmail.com",
+      "author_website": "https://github.com/eManF",
+      "icon": "m:lock",
+      "homepage": "https://github.com/emanf/eDock-CryptoTool",
+      "repository": "https://github.com/emanf/eDock-CryptoTool",
+      "category": "utility",
+      "keywords": [
+        "crypto",
+        "transform",
+        "encoding",
+        "security"
+      ],
+      "download": "https://github.com/emanf/eDock-CryptoTool/releases/latest/download/app.zip",
+      "manifest": "https://raw.githubusercontent.com/eManF/eDock-CryptoTool/main/app.json",
+      "changelog": "https://github.com/emanf/eDock-CryptoTool/releases/changelog.md",
+      "min_edock_version": "0.1.0",
+      "license": ""
+    },
+    {
+      "schema": 1,
+      "id": "emanf.file-content-exporter",
+      "title": "File Content Exporter",
+      "description": "Select a root folder, build a list of files and export their contents to a single file.",
+      "version": "0.1.0",
+      "last_modified": "2026-06-29",
+      "author": "eManF",
+      "author_email": "emanf.co@gmail.com",
+      "author_website": "https://github.com/eManF",
+      "icon": "m:",
+      "homepage": "https://github.com/emanf/eDock-FileContentExporter",
+      "repository": "https://github.com/emanf/eDock-FileContentExporter",
+      "category": "utility",
+      "keywords": [
+        "export",
+        "files",
+        "content",
+        "ai",
+        "context"
+      ],
+      "download": "https://github.com/emanf/eDock-FileContentExporter/releases/latest/download/app.zip",
+      "manifest": "https://raw.githubusercontent.com/eManF/eDock-FileContentExporter/main/app.json",
+      "changelog": "https://github.com/emanf/eDock-FileContentExporter/releases/changelog.md",
+      "min_edock_version": "0.1.0",
+      "license": ""
+    },
     {
       "schema": 1,
       "id": "emanf.spotlight",

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-08-20T18:39:54.126Z",
+  "generated_at": "2026-08-20T21:55:44.306Z",
   "packages": [
     {
       "schema": 1,
@@ -8,9 +8,9 @@
       "title": "Crypto Tool",
       "description": "A simple real-time crypto and text transform utility.",
       "version": "0.1.0",
-      "last_modified": "2026-06-29",
+      "last_modified": "2026-08-21",
       "author": "eManF",
-      "author_email": "emanf.co@gmail.com",
+      "author_email": "emanf.cco@gmail.com",
       "author_website": "https://github.com/eManF",
       "icon": "m:lock",
       "homepage": "https://github.com/emanf/eDock-CryptoTool",
@@ -22,7 +22,7 @@
         "encoding",
         "security"
       ],
-      "download": "https://github.com/emanf/eDock-CryptoTool/releases/latest/download/app.zip",
+      "download": "https://github.com/emanf/eDock-CryptoTool/releases/download/v0.1.0/emanf.crypto_tool-v0.1.0.zip",
       "manifest": "https://raw.githubusercontent.com/eManF/eDock-CryptoTool/main/app.json",
       "changelog": "https://github.com/emanf/eDock-CryptoTool/releases/changelog.md",
       "min_edock_version": "0.1.0",
@@ -63,7 +63,7 @@
       "version": "0.2.5",
       "last_modified": "2026-06-21",
       "author": "eManF",
-      "author_email": "emanf.co@gmail.com",
+      "author_email": "emanf.cco@gmail.com",
       "author_website": "https://github.com/eManF",
       "icon": "m:search",
       "homepage": "https://github.com/eManF/eDock-Spotlight",
@@ -75,7 +75,7 @@
         "installer",
         "spotlight"
       ],
-      "download": "https://github.com/eManF/eDock-Spotlight/releases/latest/download/app.zip",
+      "download": "https://github.com/emanf/eDock-Spotlight/releases/download/v0.2.5/emanf.spotlight-v0.2.5.zip",
       "manifest": "https://raw.githubusercontent.com/eManF/eDock-Spotlight/main/app.json",
       "changelog": "https://github.com/eManF/eDock-Spotlight/releases/changelog.md",
       "min_edock_version": "0.1.0",
@@ -89,7 +89,7 @@
       "version": "0.1.15",
       "last_modified": "2026-06-04",
       "author": "eManF",
-      "author_email": "emanf.co@gmail.com",
+      "author_email": "emanf.cco@gmail.com",
       "author_website": "https://github.com/eManF",
       "icon": "m:palette",
       "homepage": "https://github.com/eManF/eDock-ThemeManager",
@@ -103,7 +103,7 @@
         "customize",
         "preview"
       ],
-      "download": "https://github.com/eManF/eDock-ThemeManager/releases/latest/download/app.zip",
+      "download": "https://github.com/emanf/eDock-ThemeManager/releases/download/v0.1.5/emanf.theme_manager-v0.1.5.zip",
       "manifest": "https://raw.githubusercontent.com/eManF/eDock-ThemeManager/main/app.json",
       "changelog": "https://github.com/eManF/eDock-ThemeManager/releases/changelog.md",
       "min_edock_version": "0.1.0",

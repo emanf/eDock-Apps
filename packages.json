@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-08-31T22:35:10.155Z",
+  "generated_at": "2026-09-01T04:00:26.004Z",
   "packages": [
     {
       "schema": 1,
@@ -33,10 +33,10 @@
       "id": "emanf.files2prompt",
       "title": "Files2Prompt",
       "description": "Select a root folder, build a list of files and export their contents to a single file.",
-      "version": "0.3.3",
-      "last_modified": "2026-08-20",
+      "version": "0.5.1",
+      "last_modified": "2026-09-01",
       "author": "eManF",
-      "author_email": "emanf.cco@gmail.com",
+      "author_email": "emanf.co@gmail.com",
       "author_website": "https://github.com/eManF",
       "icon": "m:",
       "homepage": "https://github.com/emanf/eDock-Files2Prompt",
@@ -49,7 +49,7 @@
         "ai",
         "context"
       ],
-      "download": "https://github.com/emanf/eDock-Files2Prompt/releases/download/v0.3.3/files2prompt-v0.3.3-src.zip",
+      "download": "https://github.com/emanf/eDock-Files2Prompt/releases/latest/download/app.zip",
       "manifest": "https://raw.githubusercontent.com/eManF/eDock-FileContentExporter/main/app.json",
       "changelog": "https://github.com/emanf/eDock-Files2Prompt/releases/changelog.md",
       "min_edock_version": "0.1.0",

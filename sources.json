@@ -3,7 +3,8 @@
   "manifests": [
     "https://raw.githubusercontent.com/eManF/eDock-Spotlight/main/app.json",
     "https://raw.githubusercontent.com/eManF/eDock-ThemeManager/main/app.json",
-    "https://raw.githubusercontent.com/eManF/eDock-FileContentExporter/main/app.json",
-    "https://raw.githubusercontent.com/eManF/eDock-CryptoTool/main/app.json"
+    "https://raw.githubusercontent.com/emanf/eDock-Files2Prompt/main/app.json",
+    "https://raw.githubusercontent.com/eManF/eDock-CryptoTool/main/app.json",
+    "https://raw.githubusercontent.com/emanf/eDock-MacroStudio/main/app.json"
   ]
 }

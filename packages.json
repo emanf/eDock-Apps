@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-09-01T16:12:01.802Z",
+  "generated_at": "2026-09-01T17:11:40.008Z",
   "packages": [
     {
       "schema": 1,
@@ -50,8 +50,39 @@
         "context"
       ],
       "download": "https://github.com/emanf/eDock-Files2Prompt/releases/latest/download/app.zip",
-      "manifest": "https://raw.githubusercontent.com/eManF/eDock-FileContentExporter/main/app.json",
+      "manifest": "https://raw.githubusercontent.com/emanf/eDock-Files2Prompt/main/app.json",
       "changelog": "https://github.com/emanf/eDock-Files2Prompt/releases/changelog.md",
+      "min_edock_version": "0.1.0",
+      "license": ""
+    },
+    {
+      "schema": 1,
+      "id": "emanf.macro-studio",
+      "title": "Macro Studio",
+      "description": "Design, record, edit, and run modular desktop automation macros with mouse, keyboard, files, windows, dialogs, variables, timers, screen recognition, networking, and Python-powered commands.",
+      "version": "0.8.7",
+      "last_modified": "2026-09-01",
+      "author": "eManF",
+      "author_email": "emanf.cco@gmail.com",
+      "author_website": "https://github.com/emanf/eDock-MacroStudio",
+      "icon": "m:code",
+      "homepage": "https://github.com/emanf/eDock-MacroStudio",
+      "repository": "https://github.com/emanf/eDock-MacroStudio",
+      "category": "Automation",
+      "keywords": [
+        "macro",
+        "automation",
+        "mouse",
+        "keyboard",
+        "event",
+        "python",
+        "network",
+        "http",
+        "webhook"
+      ],
+      "download": "https://github.com/emanf/eDock-MacroStudio/releases/download/v0.8.7/emanf.macro-studio_v0.8.7.zip",
+      "manifest": "https://raw.githubusercontent.com/emanf/eDock-MacroStudio/main/app.json",
+      "changelog": null,
       "min_edock_version": "0.1.0",
       "license": ""
     },
